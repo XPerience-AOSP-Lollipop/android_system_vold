@@ -3160,7 +3160,10 @@ int cryptfs_enable_internal(char *howarg, int crypt_type, char *passwd,
         }
 
         /* Write the key to the end of the partition */
-        put_crypt_ftr_and_key(&crypt_ftr);
+        if (put_crypt_ftr_and_key(&crypt_ftr)) {
+            SLOGE("Error writing the key to the end of the partition\n");
+            goto error_shutting_down;
+        }
 
         /* If any persistent data has been remembered, save it.
          * If none, create a valid empty table and save that.
@@ -3568,7 +3571,7 @@ int cryptfs_pfe_boot(void)
     }
 
     if (!(crypt_ftr.flags & CRYPT_PFE_ACTIVATED) ) {
-        SLOGE("PFE not activated");
+        SLOGI("PFE not activated");
         goto exit_err;
     }
 
@@ -3640,12 +3643,14 @@ int cryptfs_changepw(int crypt_type, const char *newpw)
                        crypt_ftr.master_key,
                        &crypt_ftr)) {
         SLOGE("Error encrypting master key");
+        free(adjusted_passwd);
         return -1;
     }
 
     /* save the key */
     if (put_crypt_ftr_and_key(&crypt_ftr)) {
         SLOGE("Failed to save key");
+        free(adjusted_passwd);
         return -1;
     }
 
@@ -3654,6 +3659,7 @@ int cryptfs_changepw(int crypt_type, const char *newpw)
                                     DEFAULT_PASSWORD : newpw,
                                     (char*)crypt_ftr.crypto_type_name);
 #endif
+    free(adjusted_passwd);
     return 0;
 }
 
