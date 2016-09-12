@@ -87,7 +87,7 @@ common_static_libraries := \
 	libz
 
 vold_conlyflags := -std=c11
-vold_cflags := -Werror -Wall -Wno-missing-field-initializers -Wno-unused-variable -Wno-unused-parameter
+vold_cflags := -Werror -Wall -Wno-missing-field-initializers -Wno-unused-variable -Wno-unused-parameter -Wno-implicit-function-declaration
 
 ifeq ($(TARGET_KERNEL_HAVE_EXFAT),true)
 vold_cflags += -DCONFIG_KERNEL_HAVE_EXFAT
