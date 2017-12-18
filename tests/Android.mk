@@ -34,6 +34,6 @@ LOCAL_SHARED_LIBRARIES := \
 
 LOCAL_SRC_FILES := CryptfsScryptHidlizationEquivalence_test.cpp
 LOCAL_MODULE := vold_cryptfs_scrypt_hidlization_equivalence_test
-LOCAL_MODULE_TAGS := tests
+LOCAL_MODULE_TAGS := eng tests
 
 include $(BUILD_NATIVE_TEST)
